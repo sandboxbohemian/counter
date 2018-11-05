@@ -1,0 +1,213 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "barkeep",
+            "intents": [
+                {
+                    "name": "AMAZON.LaunchIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "InventoryStatus",
+                    "slots": [
+                        {
+                            "name": "liquor",
+                            "type": "AMAZON.Drink",
+                            "samples": [
+                                "yup {liquor}",
+                                "yeah {liquor}",
+                                "yes {liquor}",
+                                "{liquor}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "do I have any {liquor}"
+                    ]
+                },
+                {
+                    "name": "AddToInventory",
+                    "slots": [
+                        {
+                            "name": "liquor",
+                            "type": "AMAZON.Drink"
+                        }
+                    ],
+                    "samples": [
+                        "add {liquor} to my inventory",
+                        "add {liquor}"
+                    ]
+                },
+                {
+                    "name": "BarMenu",
+                    "slots": [],
+                    "samples": [
+                        "what cocktails can you make",
+                        "what drinks can you make",
+                        "what can you make",
+                        "what is on the menu"
+                    ]
+                },
+                {
+                    "name": "MyBarMenu",
+                    "slots": [],
+                    "samples": [
+                        "what cocktails can I make",
+                        "what drinks can I make",
+                        "what can I make"
+                    ]
+                },
+                {
+                    "name": "BarkeepsChoice",
+                    "slots": [],
+                    "samples": [
+                        "try again",
+                        "surprise me"
+                    ]
+                },
+                {
+                    "name": "BarkeepsChoiceSpecial",
+                    "slots": [
+                        {
+                            "name": "liquor",
+                            "type": "AMAZON.Drink",
+                            "samples": [
+                                "using {liquor}",
+                                "with {liquor} please",
+                                "OK {liquor}",
+                                "yes {liquor}",
+                                "{liquor}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "for a drink with {liquor} ",
+                        "for a {liquor} drink",
+                        "for a {liquor} cocktail",
+                        "something with {liquor}",
+                        "let us make something with {liquor}",
+                        "give me the recipe for a {liquor} cocktail",
+                        "give me the recipe for a {liquor} drink"
+                    ]
+                },
+                {
+                    "name": "DrinkIntro",
+                    "slots": [
+                        {
+                            "name": "cocktail",
+                            "type": "AMAZON.Drink",
+                            "samples": [
+                                "I want to make {cocktail}",
+                                "{cocktail} please",
+                                "{cocktail}",
+                                "OK {cocktail}",
+                                "yes {cocktail}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "{cocktail}",
+                        "the recipe of {cocktail}",
+                        "what do I need to make a {cocktail}",
+                        "what do I need to make {cocktail}",
+                        "how can I make a {cocktail}",
+                        "how can I make {cocktail}",
+                        "how to make {cocktail}",
+                        "the recipe for {cocktail}"
+                    ]
+                },
+                {
+                    "name": "Ingredients",
+                    "slots": [],
+                    "samples": [
+                        "ingredients",
+                        "measures",
+                        "ingredients please",
+                        "can I have the measures",
+                        "can I have the ingredients"
+                    ]
+                },
+                {
+                    "name": "Process",
+                    "slots": [],
+                    "samples": [
+                        "method"
+                    ]
+                }
+            ],
+            "types": []
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "InventoryStatus",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "liquor",
+                            "type": "AMAZON.Drink",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1329578056861.461933884682"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "DrinkIntro",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "cocktail",
+                            "type": "AMAZON.Drink",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1045081842264.813911075765"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.1329578056861.461933884682",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "are you looking for anything specific?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1045081842264.813911075765",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what are you in the mood for?"
+                    }
+                ]
+            }
+        ]
+    }
+}
