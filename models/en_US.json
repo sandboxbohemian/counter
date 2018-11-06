@@ -4,16 +4,15 @@
             "invocationName": "barkeep",
             "intents": [
                 {
-                    "name": "AMAZON.LaunchIntent",
-                    "samples": []
-                },
-                {
                     "name": "AMAZON.FallbackIntent",
                     "samples": []
                 },
                 {
                     "name": "AMAZON.CancelIntent",
-                    "samples": []
+                    "samples": [
+                        "you can stop now",
+                        "cancel"
+                    ]
                 },
                 {
                     "name": "AMAZON.HelpIntent",
@@ -21,7 +20,11 @@
                 },
                 {
                     "name": "AMAZON.StopIntent",
-                    "samples": []
+                    "samples": [
+                        "stop",
+                        "thanks",
+                        "that is all for now"
+                    ]
                 },
                 {
                     "name": "InventoryStatus",
@@ -77,6 +80,7 @@
                     "name": "BarkeepsChoice",
                     "slots": [],
                     "samples": [
+                        "something else",
                         "try again",
                         "surprise me"
                     ]

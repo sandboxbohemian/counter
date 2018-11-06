@@ -42,24 +42,25 @@ module.exports = {
                     request.intent.name == 'BarkeepsChoiceSpecial');
         },
         async handle(handlerInput) {
-            var sessionAttributes = handlerInput.attributesManager.getSessionAttributes;
+            var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
             const sessionLiquor = sessionAttributes.liquor;
             var requestLiquor = undefined;
             if (handlerInput.requestEnvelope.request.intent.name == 'BarkeepsChoiceSpecial') {
                 requestLiquor = handlerInput.requestEnvelope.request.intent.slots.liquor.value;
             }
-            const randomDrinkRes = await barkeep.getRandomDrink(
-                requestLiquor ?
+            const liquor = requestLiquor ?
                 requestLiquor :
                 (sessionLiquor ?
                     sessionLiquor :
-                    ''));
+                    '');
+            const randomDrinkRes = await barkeep.getRandomDrink(liquor);
             const randomDrink = randomDrinkRes.data;
             sessionAttributes.drinkName = randomDrink;
-            sessionAttributes.liquor = sessionLiquor;
+            sessionAttributes.liquor = liquor;
             const speech = `I would recommend ${randomDrink}.` +
                 ` If you would like to know more about it, say "${randomDrink}".` +
-                ` If you want a different one, say "try again"`;
+                ` If you want a different one, say "try again".` +
+                ` You can also say "repeat", or "cancel" `;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             return handlerInput.responseBuilder
                 .speak(speech)
@@ -109,7 +110,8 @@ module.exports = {
             sessionAttributes.ingredients = true;
             const list = utils.stringifyList(utils.getMeasures(recipe), 'and');
             const speech = `You will need ${list}.` +
-                ` To hear how to make ${drinkName}, say "method". `;
+                ` To hear how to make ${drinkName}, say "method". ` +
+                ` You can also say "repeat", "cancel", "start over", or "something else" `;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             return handlerInput.responseBuilder
                 .speak(speech)
@@ -126,12 +128,13 @@ module.exports = {
                 request.intent.name == 'Process';
         },
         async handle(handlerInput) {
-            var sessionAttributes = handlerInput.attributesManager.getSessionAttributes;
+            var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
             const recipe = sessionAttributes.drink;
             sessionAttributes.process = true;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             const speech = recipe.method +
-                ` To get the list of ingredients, say "ingredients". `;
+                ` To get the list of ingredients, say "ingredients". ` +
+                ` You can also say "repeat", "cancel", "start over", or "something else" `;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)
