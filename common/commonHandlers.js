@@ -1,3 +1,27 @@
+const _ = require('lodash');
+
+const liquors = [
+    `vodka`,
+    `rum`,
+    `gin`,
+    `rye`,
+    `whisky`,
+    `bourbon`,
+    `tequila`,
+    `sake`,
+    `beer`
+];
+
+const farewellSpeech = [
+    `Good bye!`,
+    `See you later!`,
+    `Adios`,
+    `Come again`,
+    `Bye`,
+    `Bye now`,
+    `Bye bye`
+];
+
 module.exports = {
     LaunchHandler: {
         canHandle(handlerInput) {
@@ -6,7 +30,7 @@ module.exports = {
         },
         async handle(handlerInput) {
             const speech = `Welcome! How may I help you today?` +
-                ` You can ask for a specific cocktail` +
+                ` You can ask for a cocktail by name.` +
                 ` Or say surprise me to get the barkeep's choice.`;
             return handlerInput.responseBuilder
                 .speak(speech)
@@ -23,10 +47,11 @@ module.exports = {
                     request.intent.name == 'AMAZON.StopIntent');
         },
         handle(handlerInput) {
-            const speech = `Good bye!`;
+            const speech = farewellSpeech[_.random(0, farewellSpeech.length - 1)];
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)
+                .withShouldEndSession(true)
                 .getResponse();
         }
     },
@@ -38,10 +63,27 @@ module.exports = {
                     request.intent.name == 'AMAZON.FallbackIntent');
         },
         handle(handlerInput) {
-            const speech = `Welcome! How may I help you today?` +
-                ` You can ask for a specific cocktail recipe, by saying the drink's name.` +
-                ` Or say surprise me to get the barkeep's choice. ` +
-                ` You can also say "give me a rum cocktail"`;
+            const randomLiquor = liquors[_.random(0, liquors.length)];
+            const speech = `You can ask for a specific cocktail recipe, by saying its name.` +
+                ` Or say surprise me to get my pick.` +
+                ` You can also say "give me a ${randomLiquor} cocktail".`;
+            return handlerInput.responseBuilder
+                .speak(speech)
+                .reprompt(speech)
+                .getResponse();
+        }
+    },
+    ErrorHandler: {
+        canHandle() {
+            return true;
+        },
+        handle(handlerInput) {
+            const randomLiquor = liquors[_.random(0, liquors.length - 1)];
+            const speech = `Sorry, I was unable to find anything relevant.` +
+                ` You can ask for a specific cocktail, by saying its name.` +
+                ` Or say "surprise me", to get my pick.` +
+                ` You can also say "give me a ${randomLiquor} cocktail".` + 
+                ` At any point of time, you can also say "cancel", or "start over".` ;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)

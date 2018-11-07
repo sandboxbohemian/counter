@@ -1,5 +1,20 @@
+const _ = require('lodash');
 const barkeep = require('../helpers/barkeep');
 const utils = require("../helpers/utils");
+
+const recommendSpeech = [
+    [`Try `, `.`],
+    [`How about `, `?`],
+    [`I would suggest `, `.`],
+    [`What about `, `?`],
+    [`Have you tried `, `?`],
+    [`I recommend `, `.`],
+    [`Wanna try`, `?`],
+    [`Do you want to try`, `?`],
+    [`Check out the recipe for `, `.`]
+];
+
+const helpSpeech = ` You can also say "repeat", "cancel", "start over", or "something else" `;
 
 module.exports = {
     BarMenuHandler: {
@@ -57,14 +72,15 @@ module.exports = {
             const randomDrink = randomDrinkRes.data;
             sessionAttributes.drinkName = randomDrink;
             sessionAttributes.liquor = liquor;
-            const speech = `I would recommend ${randomDrink}.` +
-                ` If you would like to know more about it, say "${randomDrink}".` +
-                ` If you want a different one, say "try again".` +
-                ` You can also say "repeat", or "cancel" `;
+            const recPair = recommendSpeech[_.random(0, recommendSpeech.length - 1)]
+            const speech = recPair[0] + ' ' + randomDrink + recPair[1] +
+                ` To know more about it, say "${randomDrink}".` +
+                ` For a different cocktail, say "try again".`;
+            const repromptSpeech = speech + helpSpeech;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             return handlerInput.responseBuilder
                 .speak(speech)
-                .reprompt(speech)
+                .reprompt(repromptSpeech)
                 .withShouldEndSession(false)
                 .getResponse();
         }
@@ -81,10 +97,11 @@ module.exports = {
             const recipe = response.data;
             const list = utils.stringifyList(utils.getIngredients(recipe), 'and');
             const glassware = utils.stringifyList(recipe.glassware, 'or');
-            const speech = `To create a ${drinkName}, you will need ${list}.` +
+            const speech = `To create a ${drinkName}, you need ${list}.` +
                 ` It is typically served in a ${glassware}.` +
                 ` To get the list of ingredients, say "ingredients".` +
                 ` To hear how to make ${drinkName}, say "method".`;
+            const repromptSpeech = speech + helpSpeech;
             const sessAttrib = {
                 "drinkName": drinkName,
                 "drink": recipe
@@ -92,7 +109,7 @@ module.exports = {
             handlerInput.attributesManager.setSessionAttributes(sessAttrib);
             return handlerInput.responseBuilder
                 .speak(speech)
-                .reprompt(speech)
+                .reprompt(repromptSpeech)
                 .withShouldEndSession(false)
                 .getResponse();
         }
@@ -110,12 +127,12 @@ module.exports = {
             sessionAttributes.ingredients = true;
             const list = utils.stringifyList(utils.getMeasures(recipe), 'and');
             const speech = `You will need ${list}.` +
-                ` To hear how to make ${drinkName}, say "method". ` +
-                ` You can also say "repeat", "cancel", "start over", or "something else" `;
+                ` To hear how to make ${drinkName}, say "method". `;
+            const repromptSpeech = speech + helpSpeech;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             return handlerInput.responseBuilder
                 .speak(speech)
-                .reprompt(speech)
+                .reprompt(repromptSpeech)
                 .withShouldEndSession(false)
                 .getResponse();
 
