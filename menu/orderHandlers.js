@@ -150,11 +150,11 @@ module.exports = {
             sessionAttributes.process = true;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             const speech = recipe.method +
-                ` To get the list of ingredients, say "ingredients". ` +
-                ` You can also say "repeat", "cancel", "start over", or "something else" `;
+                ` To get the list of ingredients, say "ingredients". `;
+            const repromptSpeech = speech + helpSpeech; 
             return handlerInput.responseBuilder
                 .speak(speech)
-                .reprompt(speech)
+                .reprompt(repromptSpeech)
                 .withShouldEndSession(false)
                 .getResponse();
         }

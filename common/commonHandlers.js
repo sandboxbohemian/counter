@@ -15,11 +15,11 @@ const liquors = [
 const farewellSpeech = [
     `Good bye!`,
     `See you later!`,
-    `Adios`,
-    `Come again`,
-    `Bye`,
-    `Bye now`,
-    `Bye bye`
+    `Adios!`,
+    `Come again!`,
+    `Bye!`,
+    `Bye now!`,
+    `Bye bye!`
 ];
 
 module.exports = {
@@ -67,6 +67,11 @@ module.exports = {
             const speech = `You can ask for a specific cocktail recipe, by saying its name.` +
                 ` Or say surprise me to get my pick.` +
                 ` You can also say "give me a ${randomLiquor} cocktail".`;
+            if(handlerInput.requestEnvelope.request.intent.name == 'AMAZON.FallbackIntent') {
+                var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+                delete sessionAttributes['liquor'];
+                handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+            }
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)
@@ -84,6 +89,23 @@ module.exports = {
                 ` Or say "surprise me", to get my pick.` +
                 ` You can also say "give me a ${randomLiquor} cocktail".` + 
                 ` At any point of time, you can also say "cancel", or "start over".` ;
+            return handlerInput.responseBuilder
+                .speak(speech)
+                .reprompt(speech)
+                .getResponse();
+        }
+    },
+    FallbackHandler: {
+        canHandle(handlerInput) {
+            const request = handlerInput.requestEnvelope.request;
+            return request.type === 'IntentRequest' &&
+                request.intent.name == 'AMAZON.FallbackIntent'
+        },
+        handle(handlerInput) {
+            const randomLiquor = liquors[_.random(0, liquors.length)];
+            const speech = `You can ask for a specific cocktail recipe, by saying its name.` +
+                ` Or say surprise me to get my pick.` +
+                ` You can also say "give me a ${randomLiquor} cocktail".`;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)

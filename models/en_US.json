@@ -5,7 +5,9 @@
             "intents": [
                 {
                     "name": "AMAZON.FallbackIntent",
-                    "samples": []
+                    "samples": [
+                        "start over"
+                    ]
                 },
                 {
                     "name": "AMAZON.CancelIntent",
