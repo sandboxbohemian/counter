@@ -7,6 +7,7 @@ const skillBuilder = Alexa.SkillBuilders.custom();
 
 exports.requestHandler = skillBuilder
   .addRequestHandlers(
+    commonHandlers.LaunchHandler,
     inventoryHandlers.GetInventoryHandler,
     inventoryHandlers.AddToInventoryHandler,
     orderHandlers.BarMenuHandler,

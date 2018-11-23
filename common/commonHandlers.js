@@ -3,6 +3,7 @@ const _ = require('lodash');
 const liquors = [
     `vodka`,
     `rum`,
+    `cachaça`,
     `gin`,
     `rye`,
     `whisky`,
@@ -15,11 +16,7 @@ const liquors = [
 const farewellSpeech = [
     `Good bye!`,
     `See you later!`,
-    `Adios!`,
-    `Come again!`,
-    `Bye!`,
-    `Bye now!`,
-    `Bye bye!`
+    `Bye!`
 ];
 
 module.exports = {
@@ -99,7 +96,7 @@ module.exports = {
         canHandle(handlerInput) {
             const request = handlerInput.requestEnvelope.request;
             return request.type === 'IntentRequest' &&
-                request.intent.name == 'AMAZON.FallbackIntent'
+                request.intent.name == 'AMAZON.FallbackIntent';
         },
         handle(handlerInput) {
             const randomLiquor = liquors[_.random(0, liquors.length)];

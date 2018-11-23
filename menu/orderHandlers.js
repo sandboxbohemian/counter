@@ -15,6 +15,8 @@ const recommendSpeech = [
 ];
 
 const helpSpeech = ` You can also say "repeat", "cancel", "start over", or "something else" `;
+const ingredientsSpeech = ` To get the list of ingredients, say "ingredients". `;
+const methodSpeech = ` To hear how to make ${drinkName}, say "method". `;
 
 module.exports = {
     BarMenuHandler: {
@@ -72,11 +74,11 @@ module.exports = {
             const randomDrink = randomDrinkRes.data;
             sessionAttributes.drinkName = randomDrink;
             sessionAttributes.liquor = liquor;
-            const recPair = recommendSpeech[_.random(0, recommendSpeech.length - 1)]
-            const speech = recPair[0] + ' ' + randomDrink + recPair[1] +
-                ` To know more about it, say "${randomDrink}".` +
+            const recPair = recommendSpeech[_.random(0, recommendSpeech.length - 1)];
+            const speech = recPair[0] + ' ' + randomDrink + recPair[1];
+            const repromptSpeech = recPair[0] + ' ' + randomDrink + recPair[1] +
+                ` To know more about it, say "yes", or "that one", or ${randomDrink}.` +
                 ` For a different cocktail, say "try again".`;
-            const repromptSpeech = speech + helpSpeech;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             return handlerInput.responseBuilder
                 .speak(speech)
@@ -92,7 +94,10 @@ module.exports = {
                 request.intent.name == 'DrinkIntro';
         },
         async handle(handlerInput) {
-            const drinkName = handlerInput.requestEnvelope.request.intent.slots.cocktail.value;
+            var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+            const sessionDrink = sessionAttributes.drinkName;
+            const requestDrink = handlerInput.requestEnvelope.request.intent.slots.cocktail.value;
+            const drinkName = requestDrink ? requestDrink : sessionDrink;
             const response = await barkeep.getRecipe(drinkName);
             const recipe = response.data;
             const list = utils.stringifyList(utils.getIngredients(recipe), 'and');
@@ -126,9 +131,10 @@ module.exports = {
             const drinkName = sessionAttributes.drinkName;
             sessionAttributes.ingredients = true;
             const list = utils.stringifyList(utils.getMeasures(recipe), 'and');
+            const allBranchesVisited = (sessionAttributes.ingredients === true) && (sessionAttributes.process === true);
             const speech = `You will need ${list}.` +
-                ` To hear how to make ${drinkName}, say "method". `;
-            const repromptSpeech = speech + helpSpeech;
+               (allBranchesVisited? helpSpeech: methodSpeech);
+            const repromptSpeech = speech;
             handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             return handlerInput.responseBuilder
                 .speak(speech)
@@ -148,10 +154,11 @@ module.exports = {
             var sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
             const recipe = sessionAttributes.drink;
             sessionAttributes.process = true;
-            handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+            const allBranchesVisited = (sessionAttributes.ingredients === true) && (sessionAttributes.process === true);
             const speech = recipe.method +
-                ` To get the list of ingredients, say "ingredients". `;
-            const repromptSpeech = speech + helpSpeech; 
+                (allBranchesVisited ? helpSpeech : ingredientsSpeech);
+            const repromptSpeech = speech;
+            handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(repromptSpeech)

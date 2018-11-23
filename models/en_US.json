@@ -123,7 +123,10 @@
                                 "{cocktail} please",
                                 "{cocktail}",
                                 "OK {cocktail}",
-                                "yes {cocktail}"
+                                "yes {cocktail}",
+                                "that one",
+                                "yes",
+                                "sure"
                             ]
                         }
                     ],
@@ -135,7 +138,10 @@
                         "how can I make a {cocktail}",
                         "how can I make {cocktail}",
                         "how to make {cocktail}",
-                        "the recipe for {cocktail}"
+                        "the recipe for {cocktail}",
+                        "yes",
+                        "that one",
+                        "sure"
                     ]
                 },
                 {
