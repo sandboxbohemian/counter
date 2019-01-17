@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const barkeep = require('../helpers/barkeep');
+const cocktails = require('../helpers/cocktails');
 const utils = require("../helpers/utils");
 
 const recommendSpeech = [
@@ -16,7 +17,7 @@ const recommendSpeech = [
 
 const helpSpeech = ` You can also say "repeat", "cancel", "start over", or "something else" `;
 const ingredientsSpeech = ` To get the list of ingredients, say "ingredients". `;
-const methodSpeech = ` To hear how to make ${drinkName}, say "method". `;
+const methodSpeech = ` To hear how to make this drink, say "method". `;
 
 module.exports = {
     BarMenuHandler: {
@@ -70,6 +71,8 @@ module.exports = {
                 (sessionLiquor ?
                     sessionLiquor :
                     '');
+            const test = cocktails.getRandomDrink(liquor);
+            console.log(test);
             const randomDrinkRes = await barkeep.getRandomDrink(liquor);
             const randomDrink = randomDrinkRes.data;
             sessionAttributes.drinkName = randomDrink;
