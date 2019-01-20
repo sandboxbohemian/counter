@@ -6,6 +6,7 @@ module.exports = {
                 && request.intent.name == 'InventoryStatus';
         },
         handle(handlerInput) {
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return handlerInput.responseBuilder
                 .speak('Welcome to the bar, how may I help you?')
                 .reprompt('Welcome to the bar, how may I help you?')
@@ -19,6 +20,7 @@ module.exports = {
                 && request.intent.name == 'AddToInventory';
         },
         handle(handlerInput) {
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return handlerInput.responseBuilder
                 .speak('Welcome to the bar, how may I help you?')
                 .reprompt('Welcome to the bar, how may I help you?')

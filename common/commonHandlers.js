@@ -29,6 +29,7 @@ module.exports = {
             const speech = `Welcome! How may I help you today?` +
                 ` You can ask for a cocktail by name.` +
                 ` Or say surprise me to get the barkeep's choice.`;
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)
@@ -45,6 +46,7 @@ module.exports = {
         },
         handle(handlerInput) {
             const speech = farewellSpeech[_.random(0, farewellSpeech.length - 1)];
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)
@@ -55,6 +57,7 @@ module.exports = {
     HelpHandler: {
         canHandle(handlerInput) {
             const request = handlerInput.requestEnvelope.request;
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return request.type === 'IntentRequest' &&
                 (request.intent.name == 'AMAZON.HelpIntent' ||
                     request.intent.name == 'AMAZON.FallbackIntent');
@@ -69,6 +72,7 @@ module.exports = {
                 delete sessionAttributes['liquor'];
                 handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
             }
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)
@@ -86,6 +90,7 @@ module.exports = {
                 ` Or say "surprise me", to get my pick.` +
                 ` You can also say "give me a ${randomLiquor} cocktail".` + 
                 ` At any point of time, you can also say "cancel", or "start over".` ;
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)
@@ -103,6 +108,7 @@ module.exports = {
             const speech = `You can ask for a specific cocktail recipe, by saying its name.` +
                 ` Or say surprise me to get my pick.` +
                 ` You can also say "give me a ${randomLiquor} cocktail".`;
+            handlerInput.context.callbackWaitsForEmptyEventLoop = false;
             return handlerInput.responseBuilder
                 .speak(speech)
                 .reprompt(speech)

@@ -1,19 +1,11 @@
 const mongo = require('mongodb').MongoClient;
 const config = require('./config').config;
-
-let db;
-let connection;
+const options = { useNewUrlParser: true };
 
 module.exports = {
-    connect: async (callback) =>  {
-        mongo.connect(
-            config.mongoDB.url, 
-            { useNewUrlParser: true },
-            async (err, database) => {
-                db = database.db;
-                connection = database;
-                return callback(err);
-            });
-    },
-    getDb: () => db
+    getDb: async () =>  {
+        var client = await mongo.connect(config.mongoDB.url, options);
+        var db = client.db(config.mongoDB.db)
+        return db;
+    }
 }
