@@ -9,7 +9,6 @@ const liquors = [
     `whisky`,
     `bourbon`,
     `tequila`,
-    `sake`,
     `beer`
 ];
 
